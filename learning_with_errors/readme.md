@@ -70,6 +70,8 @@ Here:
 
 Given \( A \) and \( B \), recovering \( s \) is computationally hard due to the added noise \( e \).
 
+![lwe](lwe.png)
+
 ---
 
 ## 2. Ring Learning With Errors (RLWE)
