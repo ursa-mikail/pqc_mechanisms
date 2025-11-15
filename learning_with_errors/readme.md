@@ -264,15 +264,15 @@ Alice samples two polynomials from a small-error distribution:
 
 - **Secret polynomial**
 
-  $$\
+$$\
   s_A(x) = \sum_{i=0}^{n-1} s_i x^i
-  \$$
+\$$
 
 - **Error polynomial**
 
-  $$\
+$$\
   e_A(x) = \sum_{i=0}^{n-1} e_i x^i
-  \$$
+\$$
 
 She computes:
 
@@ -293,15 +293,15 @@ Bob samples:
 
 - Secret polynomial:
 
-  $$\
+$$\
   s_B(x) = \sum_{i=0}^{n-1} s'_i x^i
-  \$$
+\$$
 
 - Error polynomial:
 
-  $$\
+$$\
   e_B(x) = \sum_{i=0}^{n-1} e'_i x^i
-  \$$
+\$$
 
 He computes:
 
