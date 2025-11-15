@@ -260,7 +260,7 @@ print(f"eA = {eA}")
 print(f"Modulus q = {q}")
 
 # Define polynomial modulus: x^n + 1
-xN_1 = [1] + [0] * (n-1) + [1]
+xN_1 = [1] + [0] * (n-1) + [1]      # 1 0 0 0 1 when n = 4
 print(f"\nPolynomial modulus: Φ(x) = x^{n} + 1")
 print(f"Coefficient form: {xN_1}")
 
