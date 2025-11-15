@@ -59,9 +59,9 @@ We generate:
 
 We compute:
 
-\[
+$$\
 B = A s + e
-\]
+\$$
 
 Here:
 
