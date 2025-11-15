@@ -420,7 +420,194 @@ Bob:   [1 0 0 1 0 1 1 1 1 0]
 Both parties derive the same secret key bitstring.
 ```
 
+# NTRU Encryption: Lattice Encryption (NTRU - Nth degree TRUncated polynomial ring)
+
+NTRU is a quantum-resistant encryption method that's faster than RSA and based on lattice mathematics. Think of it as using polynomial equations instead of large prime numbers.
+
+With Lattice encryption, Bob and Alice agree to share N, p and q, and then Bob generates two short polynomials (f and g), and generates his key pair from this. Alice receives this, and she generates a random polynomial, and encrypts some data for Bob. Bob then decrypts the message with his private key. We generate the public and private key from N, p and q.
+
+```
+N: prime
+p: prime
+q (where gcd(p,q) = 1)
+```
 
 
+1. Setup Phase
+```
+N=7 - Size of polynomials (like password length)
 
+p=29, q=491531 - Mathematical parameters that work together
 
+Everyone agrees on these numbers upfront
+```
+
+2. Bob Creates Keys
+```
+Bob picks two secret polynomials:
+f(x) = [1, 1, -1, 0, -1, 1]     (Private Key)
+g(x) = [-1, 0, 1, 1, 0, 0, -1]  (Used to make Public Key)
+
+Bob's Public Key: [394609, 27692, 62307, ...]  (Anyone can see this)
+```
+
+3. Alice Encrypts
+
+```
+Alice's Message: [1, 0, 1, 0, 1, 1, 1]  (Binary data)
+Alice's Random:  [-1, -1, 1, 1]         (Temporary secret)
+
+Encrypted: [283889, 269991, 484569, ...]  (Scrambled message)
+```
+
+4. Bob Decrypts
+
+```
+Bob uses his Private Key (f) to unscramble:
+Encrypted: [283889, 269991, 484569, ...] 
+→ Decrypted: [1, 0, 1, 0, 1, 1, 1]  (Original message!)
+```
+
+## Why It's Secure
+Quantum Computers can't break it (unlike RSA)
+
+Fast - 2-3x faster than RSA
+
+Based on lattice problems - Hard math that's resistant to attacks
+
+## Real-World Security Levels
+Moderate: N=167 (like 512-bit RSA)
+
+Standard: N=251 (like 1024-bit RSA)
+
+High: N=503 (like 2048-bit RSA)
+
+## Simple Analogy
+Think of NTRU like a special mathematical blender:
+
+Public Key = Blender settings everyone can see
+
+Private Key = Secret un-blender recipe only Bob knows
+
+Encryption = Alice puts her message in the blender
+
+Decryption = Bob uses his recipe to un-blend the message
+
+It's secure because even if you see the blended result and know the blender settings, you can't figure out how to un-blend it without Bob's secret recipe!
+
+The polynomials act like the mathematical "blending" operations that make this work securely.
+
+```
+NTRU Encryption Step-by-Step 
+🔑 Step 1: Setup Parameters
+Everyone agrees on these public values:
+
+N = 7 (Size of polynomials)
+
+p = 29 (Small modulus for messages)
+
+q = 491531 (Large modulus for encryption)
+
+👨‍💻 Step 2: Bob Generates Keys
+Private Key Creation:
+1. Bob picks 2 secret polynomials:
+
+f = [1, 1, -1, 0, -1, 1] (his main private key)
+
+g = [-1, 0, 1, 1, 0, 0, -1] (helper polynomial)
+
+2. Bob computes inverses:
+
+Finds f⁻¹ mod p and f⁻¹ mod q (mathematical inverses)
+
+3. Bob creates public key:
+
+Public Key = f⁻¹ × g mod q
+
+Result: [394609, 27692, 62307, 263073, 346149, 41538, 339225]
+
+Bob now has:
+
+✅ Private: f, g, f⁻¹ mod p
+
+✅ Public: h = f⁻¹ × g mod q
+
+👩‍💻 Step 3: Alice Encrypts Message
+Encryption Process:
+1. Alice gets Bob's public key
+
+2. Alice prepares her message:
+
+Message: [1, 0, 1, 0, 1, 1, 1] (binary data as polynomial)
+
+3. Alice picks a random polynomial:
+
+Random: [-1, -1, 1, 1]
+
+4. Alice computes encrypted message:
+
+Encrypted = p × random × public_key + message mod q
+
+Result: [283889, 269991, 484569, 353054, 179995, 159222, 235409]
+
+🔓 Step 4: Bob Decrypts
+Decryption Process:
+1. Bob receives encrypted message
+
+2. Step 1: Multiply by private key f:
+
+a = f × encrypted mod q
+
+This removes the public key component
+
+3. Step 2: Center lift:
+
+Adjust coefficients to be centered around zero
+
+4. Step 3: Multiply by f⁻¹ mod p:
+
+message = f⁻¹ × a mod p
+
+This cleans up the result
+
+5. Final output: [1, 0, 1, 0, 1, 1, 1] ✅
+
+🎯 Why This Works
+The Magic Formula:
+text
+Encryption: e = p·r·h + m mod q
+Decryption: f⁻¹ × (f × e) mod p = f⁻¹ × (f × (p·r·h + m)) mod p
+Since h = f⁻¹ × g, substituting gives:
+
+```text
+f × e = f × (p·r·f⁻¹·g + m) mod q
+      = p·r·g + f·m mod q
+```
+
+```
+After center lifting and multiplying by f⁻¹ mod p:
+```
+
+```text
+f⁻¹ × (p·r·g + f·m) mod p = f⁻¹ × f·m mod p = m
+```
+
+```
+The p·r·g term disappears because it's multiplied by p and we're working mod p.
+
+🛡️ Security Properties
+Quantum Resistant: Based on lattice problems, not factoring
+
+Fast: Much faster than RSA
+
+Small Keys: Compared to other post-quantum systems
+
+Ternary Polynomials: Only -1, 0, 1 coefficients make computations efficient
+
+📊 Real-World Security Levels
+N=167 → Moderate security (like 512-bit RSA)
+
+N=251 → Standard security (like 1024-bit RSA)
+
+N=503 → High security (like 2048-bit RSA)
+```
