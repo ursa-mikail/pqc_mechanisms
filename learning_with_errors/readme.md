@@ -2,6 +2,69 @@
 ## Overview
 Learning With Errors (LWE) is a quantum-resistant cryptographic method developed by Oded Regev in 2005. This implementation demonstrates a simplified version of LWE for educational purposes.
 
+LWE (Learning With Errors) and Ring-LWE are considered potential replacements for Diffie-Hellman (DH) in a post-quantum cryptography world. Here's why:
+
+## Why LWE Can Replace DH
+1. Quantum Resistance
+DH Problem: Based on discrete logarithm problem, which can be efficiently solved by Shor's algorithm on quantum computers
+
+LWE Problem: Believed to be resistant to both classical and quantum attacks
+
+Status: LWE is a leading candidate for NIST's post-quantum cryptography standardization
+
+2. Similar Functionality
+Both provide key exchange capabilities:
+
+```
+# Diffie-Hellman (Traditional)
+Alice: g^a mod p → Bob
+Bob: g^b mod p → Alice  
+Both compute: g^(ab) mod p
+
+# Ring-LWE (Post-Quantum)
+Alice: A, b_A = A×s_A + e_A → Bob
+Bob: b_B = A×s_B + e_B → Alice
+Both compute: s_A×b_B ≈ s_B×b_A (after error correction)
+```
+
+3. Mathematical Foundation
+DH: Relies on hardness of discrete log in cyclic groups
+
+LWE: Relies on hardness of solving noisy linear equations
+
+Ring-LWE: More efficient variant using polynomial rings
+
+# LWE vs Diffie-Hellman Comparison
+
+## Comparison Table
+
+| Aspect | Diffie-Hellman | LWE/Ring-LWE |
+|--------|----------------|--------------|
+| **Security Basis** | Discrete Logarithm | Noisy Linear Algebra |
+| **Quantum Safe** | ❌ Broken by Shor's | ✅ Believed safe |
+| **Key Sizes** | Small (256-512 bits) | Large (1K-10K bits) |
+| **Performance** | Very fast | Slower (matrix ops) |
+| **Standardization** | Widely deployed | NIST PQC candidates |
+
+## Key Differences
+
+### Diffie-Hellman
+- **Foundation**: Relies on hardness of discrete logarithm problem in cyclic groups
+- **Quantum Vulnerability**: Efficiently broken by Shor's algorithm on quantum computers
+- **Current Status**: Industry standard for key exchange (TLS, SSH, VPNs)
+- **Efficiency**: Small keys, fast computation
+
+### LWE/Ring-LWE  
+- **Foundation**: Based on hardness of solving noisy linear equations
+- **Quantum Resistance**: Believed to be secure against quantum attacks
+- **Current Status**: NIST post-quantum standardization candidate
+- **Trade-offs**: Larger keys and slower operations for quantum security
+
+## Transition Timeline
+- **Short-term**: DH/ECDH still dominant
+- **Medium-term**: Hybrid approaches (DH + LWE)
+- **Long-term**: Full transition to post-quantum cryptography like LWE
+
 ## Key Generation
 ```
 Secret Key (s): An odd integer known only to the receiver
