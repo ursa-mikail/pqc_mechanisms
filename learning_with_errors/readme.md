@@ -214,4 +214,137 @@ Thus, Alice and Bob derive a common shared key.
 Refer: [url](https://summerschool-croatia.cs.ru.nl/2018/slides/Introduction%20to%20post-quantum%20cryptography%20and%20learning%20with%20errors.pdf)
 
 
+# Ring Learning With Errors Key Exchange (RLWE-KEX)
+
+RLWE is a quantum-resistant key-exchange method based on **Learning With Errors (LWE)** but performed over the polynomial ring:
+
+$$\
+\mathbb{Z}_q[x] / (x^n + 1)
+\$$
+
+Alice and Bob agree on parameters:
+
+- Polynomial degree: \(n\)  
+- Modulus: \(q = 2^n + 1\)  
+- Ring: \(R_q = \mathbb{Z}_q[x]/(x^n+1)\)
+
+They then generate secret and error polynomials from small distributions.
+
+---
+
+## 1. Setup
+
+They agree on:
+
+- \(n\): highest polynomial degree  
+- \(q = 2^n + 1\): coefficient modulus  
+- Public polynomial \(A(x)\in R_q\)
+
+Division by \(x^n + 1\) ensures the ring structure:
+
+$$\
+A(x) \bmod (x^n + 1)
+\$$
+
+In code:
+
+```python
+xN_1 = [1] + [0]*(n-1) + [1]  # x^n + 1
+A = np.floor(p.polydiv(A, xN_1)[1])
+```
+
+## 2. Alice Generates Secrets
+
+Alice samples two polynomials from a small-error distribution:
+
+- **Secret polynomial**
+  $$\
+  s_A(x) = \sum_{i=0}^{n-1} s_i x^i
+  \$$
+
+- **Error polynomial**
+  $$\
+  e_A(x) = \sum_{i=0}^{n-1} e_i x^i
+  \$$
+
+She computes:
+$$\
+b_A(x) = A(x)\cdot s_A(x) + e_A(x) \pmod q
+\$$
+
+**Code:**
+```python
+bA = p.polymul(A, sA) % q
+bA = np.floor(p.polydiv(bA, xN_1)[1])  # mod (x^n + 1)
+bA = p.polyadd(bA, eA) % q
+```
+
+## 3. Bob Generates His Secrets
+
+Bob samples:
+
+- Secret polynomial:
+  $$\
+  s_B(x) = \sum_{i=0}^{n-1} s'_i x^i
+  \$$
+
+- Error polynomial:
+  $$\
+  e_B(x) = \sum_{i=0}^{n-1} e'_i x^i
+  \$$
+
+He computes:
+$$\
+b_B(x) = A(x)\cdot s_B(x) + e_B(x)
+\$$
+
+**Code:**
+```python
+bB = p.polymul(A, sB) % q
+bB = np.floor(p.polydiv(bB, xN_1)[1])   # mod (x^n + 1)
+bB = p.polyadd(bB, eB) % q
+```
+
+5. Noise Extraction → Final Bitstring
+
+Map each coefficient \(x_i\) of the shared polynomial to one bit using thresholding:
+
+If \(x_i < \frac{q}{4}\) → 0  
+Else if \(x_i < \frac{q}{2}\) → 1  
+Else if \(x_i < \frac{3q}{4}\) → 0  
+Else → 1
+
+This deterministic rounding removes the small RLWE noise and yields matching bitstrings for Alice and Bob.
+
+---
+
+6. Security Parameters
+
+Security | \(n\) | \(q\) | \(\Phi(x)\)
+---------|------|-------|--------------
+128-bit  | 512  | 25,601 | \(x^{512} + 1\)
+256-bit  | 1,024 | 40,961 | \(x^{1024} + 1\)
+
+These parameter choices reflect RLWE hardness assumptions considered quantum-resistant.
+
+---
+
+7. Example Output (n = 10, \(q = 2^{10} + 1 = 1023\))
+```
+Before extraction (example shared polynomials):
+
+Alice: [1010. 1021. 1011. 1019.    0. 1012. 1017. 1015.    9.    3.]  
+Bob:   [1008. 1022. 1014. 1017. 1016. 1018.    1. 1019.    2.   12.]
+
+After noise extraction → bitstring:
+
+Alice: [1 0 0 1 0 1 1 1 1 0]  
+Bob:   [1 0 0 1 0 1 1 1 1 0]
+
+Both parties derive the same secret key bitstring.
+```
+
+
+
+
 
