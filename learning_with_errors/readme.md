@@ -263,16 +263,19 @@ A = np.floor(p.polydiv(A, xN_1)[1])
 Alice samples two polynomials from a small-error distribution:
 
 - **Secret polynomial**
+
   $$\
   s_A(x) = \sum_{i=0}^{n-1} s_i x^i
   \$$
 
 - **Error polynomial**
+
   $$\
   e_A(x) = \sum_{i=0}^{n-1} e_i x^i
   \$$
 
 She computes:
+
 $$\
 b_A(x) = A(x)\cdot s_A(x) + e_A(x) \pmod q
 \$$
@@ -289,16 +292,19 @@ bA = p.polyadd(bA, eA) % q
 Bob samples:
 
 - Secret polynomial:
+
   $$\
   s_B(x) = \sum_{i=0}^{n-1} s'_i x^i
   \$$
 
 - Error polynomial:
+
   $$\
   e_B(x) = \sum_{i=0}^{n-1} e'_i x^i
   \$$
 
 He computes:
+
 $$\
 b_B(x) = A(x)\cdot s_B(x) + e_B(x)
 \$$
@@ -314,9 +320,9 @@ bB = p.polyadd(bB, eB) % q
 
 Map each coefficient \(x_i\) of the shared polynomial to one bit using thresholding:
 
-If \(x_i < \frac{q}{4}\) → 0  
-Else if \(x_i < \frac{q}{2}\) → 1  
-Else if \(x_i < \frac{3q}{4}\) → 0  
+If $$\ x_i < \frac{q}{4} \$$ → 0  
+Else if $$\ x_i < \frac{q}{2} \$$ → 1  
+Else if $$\ x_i < \frac{3q}{4} \$$ → 0  
 Else → 1
 
 This deterministic rounding removes the small RLWE noise and yields matching bitstrings for Alice and Bob.
