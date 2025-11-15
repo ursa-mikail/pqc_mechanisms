@@ -226,7 +226,11 @@ Alice and Bob agree on parameters:
 
 - Polynomial degree: \(n\)  
 - Modulus: \(q = 2^n + 1\)  
-- Ring: \(R_q = \mathbb{Z}_q[x]/(x^n+1)\)
+- Ring: R_q = 
+$$\
+\mathbb{Z}_q[x]/(x^n+1)
+\$$
+
 
 They then generate secret and error polynomials from small distributions.
 
