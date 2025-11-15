@@ -77,9 +77,9 @@ Given \( A \) and \( B \), recovering \( s \) is computationally hard due to the
 RLWE replaces matrices with polynomial rings.  
 All operations occur in the ring:
 
-\[
+$$\
 \mathbb{Z}_q[x]/(x^n + 1)
-\]
+\$$
 
 where:
 
@@ -95,15 +95,15 @@ where:
 
 A public polynomial:
 
-\[
+$$\
 A(x) = a_{n-1}x^{n-1} + \cdots + a_2 x^2 + a_1 x + a_0
-\]
+\$$
 
 She reduces it modulo:
 
-\[
+$$\
 \Phi(x) = x^n + 1
-\]
+\$$
 
 In Python:
 
@@ -116,19 +116,19 @@ A = np.floor(p.polydiv(A, xN_1)[1])
 
 Alice samples small error and secret polynomials:
 
-\[
+$$\
 e_A(x) = e_{n-1}x^{n-1} + \cdots + e_1 x + e_0 \pmod{q}
-\]
+\$$
 
-\[
+$$\
 s_A(x) = s_{n-1}x^{n-1} + \cdots + s_1 x + s_0 \pmod{q}
-\]
+\$$
 
 She then computes:
 
-\[
+$$\
 b_A(x) = A(x)s_A(x) + e_A(x)
-\]
+\$$
 
 **Python:**
 ```python
@@ -141,15 +141,15 @@ bA = p.polyadd(bA, eA) % q
 
 Bob generates his own error and secret polynomials:
 
-\[
+$$\
 e_B(x), \quad s_B(x)
-\]
+\$$
 
 Then computes:
 
-\[
+$$\
 b_B(x) = A(x)s_B(x) + e_B(x)
-\]
+\$$
 
 ```
 sB = gen_poly(n, q)
@@ -170,17 +170,17 @@ Alice sends \( A(x) \) to Bob; Bob sends \( b_B(x) \) to Alice.
 
 Alice computes:
 
-\[
+$$\
 \text{shared}_A
 = \left( b_B(x) \cdot s_A(x) \right) \bmod (x^n + 1)
-\]
+\$$
 
 Bob computes:
 
-\[
+$$\
 \text{shared}_B
 = \left( b_A(x) \cdot s_B(x) \right) \bmod (x^n + 1)
-\]
+\$$
 
 
 ```
@@ -194,9 +194,9 @@ sharedBob = np.floor(p.polydiv(sharedBob, xN_1)[1]) % q
 
 At the end:
 
-\[
+$$\
 \text{shared}_A = \text{shared}_B
-\]
+\$$
 
 Thus, Alice and Bob derive a common shared key.
 
