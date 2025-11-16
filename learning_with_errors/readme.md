@@ -13,6 +13,7 @@ LWE Problem: Believed to be resistant to both classical and quantum attacks
 Status: LWE is a leading candidate for NIST's post-quantum cryptography standardization
 
 ![rlw_kex](rlw_kex.png)
+![ring-lwe](ring-lwe.png)
 
 2. Similar Functionality
 Both provide key exchange capabilities:
