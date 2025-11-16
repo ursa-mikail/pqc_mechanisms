@@ -137,8 +137,6 @@ check[31] = ... // N[31] hashes
 
 ![wint_00](wint_00.png)
 
-![wint_01](wint_01.png)
-
 This makes SPHINCS+ a stateless scheme—you don't need to remember which keys you've used.
 
 ### Why is this Secure?
