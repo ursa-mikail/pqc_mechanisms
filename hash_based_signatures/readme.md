@@ -2,14 +2,22 @@
 Core Idea: Security is based solely on the strength of cryptographic hash functions, which are already very well-trusted and considered quantum-resistant.
 
 ## WOTS (Winternitz One-Time Signature) Process
+Lamport signature uses 512 random hashes for the private key, and which are split into Set A and Set B. The public key is the hash of each of these values. The size of the private key is 16KB (2×256×256 bits) and the public key size is also 16 KB (512 hashes with each of 256 bits).
+
+Use the Lamport method for one-time signing, but, in its core format, we would need a new public key for each signing. The major problem with Lamport is thus that we can only sign once with each public key. We can overcome this, though, by creating a hash tree which is a merger of many public keys into single root.
+
 ```
 1. Key Generation:
+Create 2 data sets with 256 random 256-bit numbers (Set A and Set B). 
+
 - Create 32 256-bit random numbers (32 values: private key)
 - Hash each value 256 times (32 values: public key)
 
 2. Signing:
 - Hash message using SHA-256 → 32 8-bit values (N₁, N₂, ..., N₃₂)
 - For each 8-bit value (in the hash of the message), hash the private key element (256 - N) times, where N is the value of the 8-bit value).
+* test each bit of the hash (0 … 255). If it is a 0, we use the ith number in Set A, else we use the ith number from Set B.
+* signature is 256 random numbers (taken from either Set A or Set B) and the public key is the 512 hashes (of Set A and Set B).
 
 3. Verification:
 - Hash message with SHA-256 (then take each 8-bit value)
@@ -17,10 +25,56 @@ Core Idea: Security is based solely on the strength of cryptographic hash functi
 - Result should equal the public key value
 ```
 
+## Lamport Signature - Simple Explanation
+### Key Generation:
+```
+1. Create 256 pairs of random 256-bit numbers (512 total)
+
+2. Private key: All 512 random numbers
+
+3. Public key: SHA-256 hash of each random number (512 hashes)
+```
+
+### Signing:
+```
+1. Hash message with SHA-256 → 256-bit digest
+
+2. For each bit position (0-255):
+
+If bit = 0 → use number from Set A
+
+If bit = 1 → use number from Set B
+
+3. Signature: 256 selected numbers
+```
+
+### Verification:
+```
+1. Hash message with SHA-256 → same 256-bit digest
+
+2. For each signature element:
+
+- Hash it and compare to corresponding public key
+
+- Must match the public key for that bit value (0=Set A hash, 1=Set B hash)
+
+
+Example:
+Message hash starts with D (hex) = 1101 (binary)
+
+Bit 0 = 1 → Use Set B[0]
+Bit 1 = 1 → Use Set B[1]
+Bit 2 = 0 → Use Set A[2]
+Bit 3 = 1 → Use Set B[3]
+
+The signature reveals only the selected numbers, keeping the others secret.
+```
+
 ### References
 ```
 [1] Kannwischer, M. J., Rijneveld, J., Schwabe, P., & Stoffelen, K. (2019). pqm4: Testing and Benchmarking NIST PQC on ARM Cortex-M4.
 [2] Bernstein, D. J., Hülsing, A., Kölbl, S., Niederhagen, R., Rijneveld, J., & Schwabe, P. (2019, November). The SPHINCS+ signature framework. In Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communications Security (pp. 2129–2146).
+[3] Lamport, L. (1979). Constructing digital signatures from a one-way function (Vol. 238). Technical Report CSL-98, SRI International. 
 ```
 
 Building Blocks: From Simple to Complex
