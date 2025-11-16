@@ -135,7 +135,9 @@ check[31] = ... // N[31] hashes
 3. Compare to Public Key: If the computed check list is identical to the signer's public key, the signature is valid. If even one bit is off, the signature is rejected.
 ```
 
-![wints](wints.png)
+![wint_00](wint_00.png)
+
+![wint_01](wint_01.png)
 
 This makes SPHINCS+ a stateless scheme—you don't need to remember which keys you've used.
 
