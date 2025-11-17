@@ -43,3 +43,5 @@ Given the equations and results, **finding the original variables is extremely d
 ## Why It's Quantum-Resistant
 
 Quantum computers are good at solving certain math problems (like factoring), but **solving multivariate polynomial systems remains hard** for both classical and quantum computers.
+
+[Reference](https://www.di.ens.fr/brice.minaud/slides/Qhub-2018.pdf)
