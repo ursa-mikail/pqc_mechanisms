@@ -151,6 +151,8 @@ This is now a simple **2×2 linear system** that can be easily solved to find:
 
 The oil and vinegar separation creates the perfect trapdoor: **easy for the key owner, hard for everyone else**.
 
+The vinegar variables are secret and which we will only know, and the oil ones will be discovered if we know the vinegar variables. The trap door is that we do not let the oil variables mix, and where they do mix in the matrix, we will have zeros (the trap door).
+
 ![vinegar_and_oil](vinegar_and_oil.png)
 
 ![vinegar_and_oil_derive](vinegar_and_oil_derive.png)
