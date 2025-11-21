@@ -21,6 +21,9 @@ NIST's decision ultimately balanced the competing advantages of lattice-based an
 | **Security History** | Relatively newer (20-25 years) | Very old and well-studied (since 1978) |
 | **Confidence in Security** | High, but newer mathematics | Extremely High, resisted cryptanalysis for 40+ years |
 
+
+For quantum robustness it is recommended that N is 6960, k is 5,412 and t is 119 (giving a large key size of 8,373,911 bits.
+
 ## NIST's Primary Rationale
 
 **Practicality and Adoption:** The massive public key size of Classic McEliece (often exceeding 1MB) posed significant barriers for widespread protocol adoption, particularly in TLS handshakes where certificate chains would become impractically large. Kyber's compact key sizes enable easier "drop-in" replacement for existing algorithms like RSA and ECC.
