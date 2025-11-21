@@ -1,6 +1,8 @@
 # 1. SPHINCS+ (SLH-DSA) - The Fort Knox of Signatures
 Core Idea: Security is based solely on the strength of cryptographic hash functions, which are already very well-trusted and considered quantum-resistant.
 
+As with SPHINCS+, LMS (Leighton-Micali Hash-Based Signature) uses the WOTS one-time signature scheme. 
+
 ## WOTS (Winternitz One-Time Signature) Process
 Lamport signature uses 512 random hashes for the private key, and which are split into Set A and Set B. The public key is the hash of each of these values. The size of the private key is 16KB (2×256×256 bits) and the public key size is also 16 KB (512 hashes with each of 256 bits).
 
