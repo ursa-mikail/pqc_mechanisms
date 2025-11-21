@@ -216,3 +216,50 @@ Analogy: Signing a document by including a unique, notarized fingerprint of ever
 | SPHINCS+-SHA-256s     | 64 bytes        | 128 bytes        | 49,856 bytes   | 256-bit        |
 
 
+
+In this case, n is the hash size (32 bytes — 256 bits), and p is the number of n-byte string elements. We have n times p keys to use, and where the signature length is n times p + 4 + 32 bytes. The smallest signature length in the table is LMOTS_SHA256_N32_W8 and which is 1,124 bytes long.
+
+In the RFC, we have m for the number of bytes associated with each private key, and h as the height of the Merkle tre. Then one LMS private key is defined as 2^h OTS private keys:
+
++--------------------+--------+----+----+
+| Name               | H      | m  | h  |
++--------------------+--------+----+----+
+| LMS_SHA256_M32_H5  | SHA256 | 32 | 5  |
+|                    |        |    |    |
+| LMS_SHA256_M32_H10 | SHA256 | 32 | 10 |
+|                    |        |    |    |
+| LMS_SHA256_M32_H15 | SHA256 | 32 | 15 |
+|                    |        |    |    |
+| LMS_SHA256_M32_H20 | SHA256 | 32 | 20 |
+|                    |        |    |    |
+| LMS_SHA256_M32_H25 | SHA256 | 32 | 25 |
++--------------------+--------+----+----+
+The number of private key sise is then 2^h * ((n*p)+4). For LMS_SHA256_M32_H5, we will get 2⁵ *((32*34) + 4) = 34 944 bytes ~ 34 KB. Note there is no need to store the private keys, as we can compute the tree whenever required. 
+
+## Understanding the Components
+
+### 1-Time Signatures (OTS) - The Individual Pages
+- Each OTS is used **exactly once**
+- Signatures are quite large - the smallest mentioned is **1,124 bytes**
+- Different OTS types exist (like `LMOTS_SHA256_N32_W8`) with varying sizes
+
+### LMS System - The Complete Notepad
+The table shows different notepad sizes. The key parameter is **`h` (height)** - it determines how many "pages" your notepad has:
+
+| Notepad Type | Total Pages | Usage Scenario |
+|-------------|-------------|----------------|
+| **H5** | 32 pages | Low-use devices |
+| **H10** | 1,024 pages | Moderate use |
+| **H15** | 32,768 pages | High use |
+| **H20** | 1,048,576 pages | Server-level use |
+| **H25** | ~33.5 million pages | Extreme use cases |
+
+## Key Trade-Off
+
+**Choose your notepad size based on:**
+- **How many signatures you need** (more pages = more signatures)
+- **How large a key you can handle** (more pages = larger key size)
+
+## The Best Part
+You **don't need to store the entire private key** at once! The system can calculate parts as needed, making it practical for real-world use.
+
