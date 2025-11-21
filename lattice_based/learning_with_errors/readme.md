@@ -2,6 +2,8 @@
 ## Overview
 Learning With Errors (LWE) is a quantum-resistant cryptographic method developed by Oded Regev in 2005. This implementation demonstrates a simplified version of LWE for educational purposes.
 
+[lattice_based](https://eprint.iacr.org/2015/939.pdf)
+
 LWE (Learning With Errors) and Ring-LWE are considered potential replacements for Diffie-Hellman (DH) in a post-quantum cryptography world. Here's why:
 
 ## Why LWE Can Replace DH
