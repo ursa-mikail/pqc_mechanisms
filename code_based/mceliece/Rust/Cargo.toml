@@ -1,0 +1,10 @@
+[package]
+name = "mce"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+classic-mceliece-rust = "3.0"
+rand = "0.8.5"
+hex = "0.4"
+
