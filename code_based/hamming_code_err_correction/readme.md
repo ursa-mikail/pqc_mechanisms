@@ -136,4 +136,12 @@ Syndrome matching column i of H: Error at bit position i
 Syndrome not matching any column: Multiple errors detected
 ```
 
+### Extensions
+The Hamming (7,4) code can be extended to:
+```
+Hamming (15,11) for longer messages
 
+SECDED (Single Error Correction, Double Error Detection)
+
+Product codes for two-dimensional protectio
+```
