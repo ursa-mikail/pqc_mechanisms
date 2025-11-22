@@ -1,3 +1,133 @@
+# McEliece Cryptosystem Implementation
+## Overview
+The McEliece cryptosystem is a public-key encryption scheme based on error-correcting codes. This implementation uses a (7,4) Hamming code that can correct one error in 7-bit codewords.
+
+Mathematical Foundation
+```
+Key Generation
+The system uses 3 matrices:
+
+G: Generator matrix of the error-correcting code
+
+S: Scrambler matrix (invertible)
+
+P: Permutation matrix
+
+The public key is derived as: G' = S·G·P mod 2
+```
+
+## Encryption Process
+```
+Ciphertext = Message × G' + Error
+
+text
+c = m × G' + e
+```
+
+## Decryption Process
+```
+Remove permutation: y' = c × P⁻¹
+
+Error correction: Correct errors using the underlying code
+
+Remove scrambler: m = corrected × G⁻¹ × S⁻¹
+```
+
+## Step-by-Step Example
+
+```
+Step 1: Key Generation
+Generator Matrix G (7,4 Hamming Code):
+
+text
+[1 0 0 0 1 1 0]
+[0 1 0 0 1 0 1]
+[0 0 1 0 0 1 1]
+[0 0 0 1 1 1 1]
+
+
+Scrambler Matrix S:
+
+text
+[1 1 0 1]
+[1 0 0 1]
+[0 1 1 1]
+[1 1 0 0]
+
+
+Permutation Matrix P:
+
+text
+[0 1 0 0 0 0 0]
+[0 0 0 1 0 0 0]
+[0 0 0 0 0 0 1]
+[1 0 0 0 0 0 0]
+[0 0 1 0 0 0 0]
+[0 0 0 0 0 1 0]
+[0 0 0 0 1 0 0]
+
+
+Public Key G' = S·G·P:
+
+text
+[1 1 1 1 0 0 0]
+[1 1 0 0 1 0 0]
+[1 0 0 1 1 0 1]
+[0 1 0 1 1 1 0]
+```
+
+```
+Step 2: Encryption
+Message: m = [1, 1, 0, 1]
+
+Compute m × G':
+[1, 1, 0, 1] × G' = [1, 0, 1, 1, 0, 1, 0]
+
+Add Error Vector: e = [0, 0, 0, 0, 1, 0, 0]
+
+Ciphertext: c = m × G' + e = [1, 0, 1, 1, 1, 1, 0]
+```
+
+```
+Step 3: Decryption
+Remove Permutation: y' = c × P⁻¹ = [0, 1, 1, 1, 1, 1, 0]
+
+Error Correction: Detect and correct error at position 5 → [0, 1, 1, 1, 0, 1, 0]
+
+Remove Scrambler: m = corrected × G⁻¹ × S⁻¹ = [1, 1, 0, 1]
+```
+
+### Security Properties
+```
+Public Key: G' appears random due to S and P
+
+Private Key: (G, S, P) must be kept secret
+
+Error Vector: Small weight errors provide security while allowing correction
+
+NP-hard Problem: Security relies on the difficulty of decoding random linear codes
+```
+
+### Advantages
+```
+Resistant to quantum computer attacks
+
+Fast encryption and decryption
+
+Proven security reduction
+```
+###Limitations
+```
+Large public key sizes
+
+Limited to specific error patterns
+
+Requires careful parameter selection
+```
+
+This implementation demonstrates the core concepts of the McEliece cryptosystem using a simple (7,4) Hamming code. Real-world implementations use much larger codes like Goppa codes for enhanced security.
+
+
 A code-based scheme was not chosen as the primary winner. Code-based cryptography, whose most prominent candidate was Classic McEliece, was not selected as the primary standard, but it was not rejected either. It was placed into a special category.
 
 NIST created a Fourth Round specifically for code-based and other promising KEMs. The finalists in this round are:
